@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #333333;
+  --accent: #4338ca;
+  --accent-hover: #3730a3;
+  --gray-light: #F2F2F2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Hide default arrows */
+.slick-prev,
+.slick-next {
+  display: none !important;
+}
+
+/* Slider Styling */
+.slick-slider {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.slick-dots {
+  position: absolute;
+  bottom: -40px !important;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+  z-index: 20;
+}
+
+.slick-dots li {
+  display: inline-block;
+  margin: 0 4px;
+}
+
+.slick-dots li button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: rgba(67, 56, 202, 0.5) !important;
+  border: none;
+  text-indent: -9999px;
+  cursor: pointer;
+}
+
+.slick-dots li.slick-active button {
+  background-color: #4338ca !important;
+}
+
+.slick-dots li button:before {
+  font-size: 12px !important;
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 10 !important;
+}
+
+.slick-prev {
+  left: -25px !important;
+}
+
+.slick-next {
+  right: -25px !important;
+}
+
+@media (max-width: 768px) {
+  .slick-dots {
+    bottom: 10px;
+  }
+}
+
+.galeri-slider .slick-slide {
+  padding: 0 8px;
+}
+
+.galeri-slider .slick-dots {
+  bottom: -40px;
+}
+
+.galeri-slider .slick-dots li button:before {
+  font-size: 12px;
+}
+
+.galeri-slider .slick-prev,
+.galeri-slider .slick-next {
+  z-index: 10;
+}
+
+.galeri-slider .slick-prev {
+  left: -25px;
+}
+
+.galeri-slider .slick-next {
+  right: -25px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom button styles */
+.btn-primary {
+  background-color: var(--accent);
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+/* Custom link styles */
+a {
+  color: var(--foreground);
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+/* Border colors */
+.border-light {
+  border-color: var(--gray-light);
+}
+
+/* Background colors */
+.bg-light {
+  background-color: var(--gray-light);
+}
