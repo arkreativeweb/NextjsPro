@@ -1,163 +1,94 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
-const agenData = [
-  {
-    id: 1,
-    nama: 'Ahmad Fadli',
-    foto: '/images/agen/agen1.jpg',
-    spesialisasi: 'Residential',
-    pengalaman: '5 tahun',
-    rating: 4.8,
-    lokasi: 'Jakarta Selatan',
-    propertiTerjual: 42,
-    sertifikasi: ['REI', 'AREBI'],
-    telepon: '+62812-3456-7890',
-    email: 'ahmad.fadli@email.com'
-  },
-  // Data lainnya
-]
+interface Agent {
+  id: number
+  name: string
+  role: string
+  image: string
+  phone: string
+  email: string
+  description: string
+  properties_count: number
+}
 
-function AgenPage() {
-  const [selectedFilter, setSelectedFilter] = useState('semua')
-  const [searchQuery, setSearchQuery] = useState('')
+export default function AgenPage() {
+  const [agents, setAgents] = useState<Agent[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const filteredAgen = agenData.filter(agen => {
-    const matchesSearch = agen.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         agen.lokasi.toLowerCase().includes(searchQuery.toLowerCase())
-    
-    if (selectedFilter === 'semua') return matchesSearch
-    if (selectedFilter === 'rating') return matchesSearch && agen.rating >= 4.8
-    if (selectedFilter === 'pengalaman') return matchesSearch && parseInt(agen.pengalaman) >= 7
-    return matchesSearch
-  })
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const response = await fetch('https://admin.arearumah.com/api/agents')
+        const data = await response.json()
+        setAgents(data.data)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error fetching agents:', error)
+        setLoading(false)
+      }
+    }
+
+    fetchAgents()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-32 pb-16">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Agen Properti Profesional</h1>
-          <p className="text-gray-600">Temukan agen properti berpengalaman untuk membantu transaksi properti Anda</p>
-        </div>
-
-        {/* Search & Filter */}
-        <div className="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="w-full md:w-96">
-            <input
-              type="text"
-              placeholder="Cari agen..."
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-2">
-            <button 
-              onClick={() => setSelectedFilter('semua')}
-              className={`px-4 py-2 rounded-lg ${selectedFilter === 'semua' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700'}`}
-            >
-              Semua
-            </button>
-            <button 
-              onClick={() => setSelectedFilter('rating')}
-              className={`px-4 py-2 rounded-lg ${selectedFilter === 'rating' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700'}`}
-            >
-              Rating Tinggi
-            </button>
-            <button 
-              onClick={() => setSelectedFilter('pengalaman')}
-              className={`px-4 py-2 rounded-lg ${selectedFilter === 'pengalaman' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700'}`}
-            >
-              Paling Berpengalaman
-            </button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredAgen.map((agen) => (
-            <div key={agen.id} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="relative w-24 h-24">
-                    <Image
-                      src={agen.foto}
-                      alt={agen.nama}
-                      fill
-                      className="rounded-full object-cover"
-                    />
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-lg font-bold text-yellow-500">{agen.rating}</span>
-                    <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  </div>
-                </div>
-
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{agen.nama}</h3>
-                <p className="text-gray-600 text-sm mb-4">{agen.spesialisasi}</p>
-
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <span className="text-sm text-gray-600">Pengalaman</span>
-                    <p className="text-lg font-bold text-gray-900">{agen.pengalaman}</p>
-                  </div>
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <span className="text-sm text-gray-600">Properti Terjual</span>
-                    <p className="text-lg font-bold text-gray-900">{agen.propertiTerjual}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 mb-6">
-                  {agen.sertifikasi.map((sertifikat, index) => (
-                    <span 
-                      key={index}
-                      className="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-sm"
-                    >
-                      {sertifikat}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <span className="text-gray-600">{agen.lokasi}</span>
-                  </div>
-                  <button className="text-indigo-600 font-semibold hover:text-indigo-700">
-                    Hubungi
-                  </button>
-                </div>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8 text-center">Our Agents</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {agents.map((agent) => (
+          <div key={agent.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="relative h-48">
+              <Image
+                src={agent.image || '/images/default-agent.png'}
+                alt={agent.name}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="p-4">
+              <h2 className="text-xl font-semibold mb-2">{agent.name}</h2>
+              <p className="text-gray-600 mb-2">{agent.role}</p>
+              
+              <div className="mt-4 space-y-2">
+                <p className="flex items-center text-gray-600">
+                  <svg className="h-5 w-5 mr-2" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                  </svg>
+                  {agent.phone}
+                </p>
+                <p className="flex items-center text-gray-600">
+                  <svg className="h-5 w-5 mr-2" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                    <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                  {agent.email}
+                </p>
+              </div>
+              
+              <div className="mt-4">
+                <p className="text-gray-600 line-clamp-3">{agent.description}</p>
+              </div>
+              
+              <div className="mt-4 pt-4 border-t">
+                <p className="text-sm text-gray-500">
+                  Properties: {agent.properties_count}
+                </p>
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Call to Action */}
-        <div className="mt-16 bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-2xl overflow-hidden">
-          <div className="px-6 py-12 md:px-12 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">Ingin Menjadi Agen Partner?</h2>
-            <p className="text-indigo-100 mb-8 max-w-2xl mx-auto">
-              Bergabunglah dengan kami untuk memperluas jaringan dan meningkatkan penjualan properti Anda
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Daftar Sekarang
-              </button>
-              <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                Pelajari Lebih Lanjut
-              </button>
-            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   )
 }
-
-export default AgenPage
