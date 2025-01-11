@@ -107,7 +107,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/properties`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/properties`, {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -133,7 +133,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchBanner = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/baner-utama`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/baner-utama`);
         const result = await response.json();
         if (result.status && result.data && result.data.length > 0) {
           setBanner(result.data[0]);
