@@ -1,9 +1,33 @@
-'use client'
+'use client';
 
-import React from 'react'
-import Image from 'next/image'
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
-export default function TentangKami() {
+const Agents = () => {
+  const [agents, setAgents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/agents');
+        if (!response.ok) {
+          throw new Error('Failed to fetch agents');
+        }
+        const result = await response.json();
+        setAgents(result.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching agents:', error);
+        setError(error.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchAgents();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 pt-32 pb-16">
       {/* Hero Section */}
@@ -94,46 +118,41 @@ export default function TentangKami() {
         <div>
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Tim Kami</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              {
-                nama: 'John Doe',
-                jabatan: 'CEO & Founder',
-                foto: '/images/team/1.jpg'
-              },
-              {
-                nama: 'Jane Smith',
-                jabatan: 'Head of Marketing',
-                foto: '/images/team/2.jpg'
-              },
-              {
-                nama: 'Michael Brown',
-                jabatan: 'Senior Property Agent',
-                foto: '/images/team/3.jpg'
-              },
-              {
-                nama: 'Sarah Wilson',
-                jabatan: 'Customer Relations',
-                foto: '/images/team/4.jpg'
-              }
-            ].map((member, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-lg text-center">
-                <div className="relative w-32 h-32 mx-auto mb-4">
-                  <Image
-                    src={member.foto}
-                    alt={member.nama}
-                    fill
-                    className="rounded-full object-cover"
-                  />
+            {isLoading ? (
+              <p className="text-center text-gray-600 col-span-full">Memuat data...</p>
+            ) : error ? (
+              <p className="text-center text-red-600 col-span-full">
+                Terjadi kesalahan: {error}
+              </p>
+            ) : agents.length === 0 ? (
+              <p className="text-center text-gray-600 col-span-full">
+                Tidak ada data agen untuk ditampilkan.
+              </p>
+            ) : (
+              agents.map((agent) => (
+                <div key={agent.id} className="bg-white p-6 rounded-xl shadow-lg text-center">
+                  <div className="relative w-32 h-32 mx-auto mb-4">
+                  <div className="relative w-32 h-32 mx-auto mb-4">
+                  <div className="relative w-32 h-32 mx-auto mb-4">
+                   <Image
+    src={`http://localhost:8000/storage/${agent.image}`}
+    alt={agent.name}
+    fill
+    className="rounded-full object-cover"
+  />
+</div>
+</div>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">{agent.name}</h3>
+                  <p className="text-gray-600">{agent.jabatan}</p>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">{member.nama}</h3>
-                <p className="text-gray-600">{member.jabatan}</p>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
-          {/* Call to Action */}
-          <div className="mt-16 bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-2xl overflow-hidden">
+        {/* Call to Action */}
+        <div className="mt-16 bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-2xl overflow-hidden">
           <div className="px-6 py-12 md:px-12 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">Ingin Menjadi Agen Partner?</h2>
             <p className="text-indigo-100 mb-8 max-w-2xl mx-auto">
@@ -151,5 +170,7 @@ export default function TentangKami() {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default Agents;

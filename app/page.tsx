@@ -107,7 +107,17 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/properties');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/properties`, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const result = await response.json();
         setProperties(result.data);
         setIsLoading(false);
@@ -123,7 +133,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchBanner = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/baner-utama');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/baner-utama`);
         const result = await response.json();
         if (result.status && result.data && result.data.length > 0) {
           setBanner(result.data[0]);
@@ -258,7 +268,7 @@ const HomePage = () => {
         params.append('harga_range', searchParams.harga_range);
       }
 
-      const response = await fetch(`http://localhost:8000/api/properties/search?${params.toString()}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/properties/search?${params.toString()}`, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -291,7 +301,7 @@ const HomePage = () => {
       case 'apartemen':
         return '🏢';
       case 'ruko':
-        return '���';
+        return '🏡';
       case 'tanah':
         return '🌳';
       default:
@@ -323,7 +333,7 @@ const HomePage = () => {
 
     setIsSearching(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/properties/search?keyword=${value}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/properties/search?keyword=${value}`, {
         headers: {
           'Accept': 'application/json'
         }
@@ -402,19 +412,19 @@ const HomePage = () => {
 
           {/* Content Overlay - Pencarian Property */}
           <div className="absolute inset-x-0 bottom-0 md:inset-0 flex flex-col md:justify-center z-20">
-            <div className="w-full max-w-7xl mx-auto px-4">
-              {/* Judul Utama - Posisi di atas dengan margin yang lebih besar untuk mobile */}
-              <div className="text-center mb-8 md:mb-12 mt-[-350px] sm:mt-[-300px] md:mt-[-100px]">
-                <h1 className="text-3xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-                  Area Rumah Impian
-                </h1>
-                <p className="text-base md:text-xl text-gray-200 max-w-2xl mx-auto drop-shadow">
-                  Berbagai pilihan properti untuk investasi dan hunian
-                </p>
-              </div>
+  <div className="w-full max-w-7xl mx-auto px-4 pt-24 md:pt-0"> {/* Kurangi pt-32 menjadi pt-24 */}
+    {/* Judul Utama - Kurangi margin */}
+    <div className="text-center pb-4 mb-4 md:mb-8 mt-[80px] sm:mt-[100px] md:mt-[120px]"> {/* Kurangi margin */}
+      <h1 className="text-3xl md:text-6xl font-bold text-white mb-2 drop-shadow-lg"> {/* Kurangi mb-4 menjadi mb-2 */}
+        Area Rumah Impian
+      </h1>
+      <p className="text-base md:text-xl text-gray-200 max-w-2xl mx-auto drop-shadow mb-4"> {/* Kurangi mb-8 menjadi mb-4 */}
+        Berbagai pilihan properti untuk investasi dan hunian
+      </p>
+    </div>
 
               {/* Search Box dengan Design Modern */}
-              <div className="max-w-4xl mx-auto mb-8 md:mb-0 relative z-30">
+              <div className="max-w-4xl mx-auto mb-12 md:mb-16 relative z-30">
                 <div className="bg-white/90 backdrop-blur-xl p-4 md:p-8 rounded-2xl md:rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/20">
                   <form onSubmit={handleSearchSubmit} className="flex-1">
                     <div className="relative" ref={searchRef}>
@@ -618,7 +628,7 @@ const HomePage = () => {
               </div>
 
               {/* Quick Categories */}
-              <div className="flex flex-wrap justify-center gap-3 mt-6">
+              <div className="flex flex-wrap justify-center gap-3 mt-8 pb-12">
                 {['Rumah', 'Apartemen', 'Ruko', 'Tanah'].map((category) => (
                   <a
                     key={category}

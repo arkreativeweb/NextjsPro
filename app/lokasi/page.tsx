@@ -22,7 +22,16 @@ const LocationPage = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/locations?limit=4');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/locations?limit=4`);
+  
+        // Log untuk memeriksa status respons
+        console.log('Response status:', response.status);
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        // Memastikan respons adalah JSON
         const result = await response.json();
         setLocations(result.data);
         setIsLoading(false);
@@ -31,7 +40,7 @@ const LocationPage = () => {
         setIsLoading(false);
       }
     };
-
+  
     fetchLocations();
   }, []);
 

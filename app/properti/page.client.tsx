@@ -79,28 +79,30 @@ const PropertyListClient = () => {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gray-50">
-        {/* Hero Section */}
-        <div className="relative h-[300px] md:h-[400px] overflow-hidden">
-          <div className="absolute inset-0">
-            <img 
-              src="/images/property-hero.jpg" 
-              alt="Property Hero"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70" />
-          </div>
-          <div className="relative h-full max-w-7xl mx-auto px-4 flex flex-col justify-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 max-w-2xl">
-              Temukan Properti Premium di Jakarta Selatan
-            </h1>
-            <p className="text-lg text-gray-200 max-w-xl mb-8">
-              Koleksi lengkap rumah, apartemen, dan ruko di lokasi strategis dengan harga terbaik
-            </p>
-          </div>
-        </div>
+      <main className="min-h-screen bg-gray-50 pb-16 md:pb-24"> 
+{/* Hero Section */}
+<div className="relative h-[300px] md:h-[400px] overflow-hidden pb-24"> {/* Tambahkan padding bottom */}
+  <div className="absolute inset-0">
+    <img 
+      src="/images/property-hero.jpg" 
+      alt="Property Hero"
+      className="w-full h-full object-cover"
+    />
+    <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70" />
+  </div>
+  <div className="relative h-full max-w-7xl mx-auto px-4 flex flex-col justify-center pt-16 md:pt-20">
+    <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 max-w-2xl mt-8 md:mt-12">
+      Temukan Properti Premium di Jakarta Selatan
+    </h1>
+    <p className="text-lg text-gray-200 max-w-xl mb-8">
+      Koleksi lengkap rumah, apartemen, dan ruko di lokasi strategis dengan harga terbaik
+    </p>
+  </div>
+</div>
 
-        <div className="max-w-7xl mx-auto px-4 -mt-16 relative z-10 mb-12">
+<div className="max-w-7xl mx-auto px-4 -mt-16 relative z-10 mb-16 md:mb-20"> 
+
+
           {/* Filter Card */}
           <div className="bg-white rounded-xl shadow-xl p-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -184,7 +186,7 @@ const PropertyListClient = () => {
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900">
                 {isLoading ? 'Memuat Properti...' : 
-                 properties.length > 0 ? `${properties.length} Properti Ditemukan` : 
+                 properties.length > 0 ? `${properties.length} Listing` : 
                  'Tidak Ada Properti'}
               </h2>
               <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -199,8 +201,7 @@ const PropertyListClient = () => {
 
             {/* Property Grid */}
             {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[...Array(6)].map((_, index) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 md:mb-12">                {[...Array(6)].map((_, index) => (
                   <div key={index} className="animate-pulse bg-white rounded-xl overflow-hidden shadow-lg">
                     <div className="h-48 bg-gray-200" />
                     <div className="p-4">
@@ -225,11 +226,15 @@ const PropertyListClient = () => {
                     className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={property.images[0]?.url || '/images/property-placeholder.jpg'}
-                        alt={property.nama}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                    <img
+  src={property.images[0]?.url || '/placeholder.jpg'} // Simplified path
+  alt={property.nama}
+  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+  onError={(e) => {
+    // Fallback jika gambar utama atau placeholder gagal dimuat
+    e.currentTarget.src = 'images/placeholder.jpg';
+  }}
+/>
                       <div className="absolute top-4 left-4 flex gap-2">
                         <span className="px-3 py-1 bg-indigo-600/90 backdrop-blur-sm text-white text-sm rounded-full">
                           {property.status}
