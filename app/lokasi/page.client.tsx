@@ -22,7 +22,7 @@ const LocationPageClient = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/locations?limit=4');
+        const response = await fetch('https://admin.arearumah.com/api/locations?limit=4');
         const result = await response.json();
         setLocations(result.data);
         setIsLoading(false);

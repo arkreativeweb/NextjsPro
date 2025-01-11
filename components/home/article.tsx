@@ -60,7 +60,7 @@ export default function ArticleSection() {
 
     async function getArticles() {
       try {
-        const response = await fetch('http://localhost:8000/api/articles');
+        const response = await fetch('https://admin.arearumah.com/api/articles');
         const data = await response.json();
         
         if (mounted && data.data) {

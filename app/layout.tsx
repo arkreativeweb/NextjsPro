@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     'apartemen pondok indah',
     'properti kebayoran baru'
   ],
-  authors: [{ name: 'Your Company Name' }],
+  authors: [{ name: 'Area Rumah' }],
   openGraph: {
     type: 'website',
     locale: 'id_ID',
-    url: 'https://yourwebsite.com',
+    url: 'https://arearumah.com/',
     siteName: 'Properti Premium Jakarta Selatan',
     images: [
       {

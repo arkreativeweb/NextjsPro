@@ -23,7 +23,7 @@ const LocationDetailClient = ({ slug }: LocationDetailClientProps) => {
   useEffect(() => {
     const fetchLocationDetail = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/locations/${slug}`);
+        const response = await fetch(`https://admin.arearumah.com/api/locations/${slug}`);
         const result = await response.json();
         setLocation(result.data);
         if (result.data.properties) {

@@ -33,7 +33,7 @@ export default function DeveloperPage() {
   useEffect(() => {
     const fetchDevelopers = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/developers');
+        const response = await fetch('https://admin.arearumah.com/api/developers');
         
         if (!response.ok) {
           throw new Error('Gagal mengambil data');
@@ -61,7 +61,7 @@ export default function DeveloperPage() {
     if (!path) return '/images/placeholder.jpg';
     if (path.startsWith('http')) return path;
     if (path.startsWith('/storage')) {
-      return `http://localhost:8000${path}`;
+      return `https://admin.arearumah.com${path}`;
     }
     return `/images/${path}`;
   };

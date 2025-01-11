@@ -49,7 +49,7 @@ export default function SearchPage() {
       
       try {
         const response = await fetch(
-          `http://localhost:8000/api/properties/search?keyword=${encodeURIComponent(keyword)}`,
+          `https://admin.arearumah.com/api/properties/search?keyword=${encodeURIComponent(keyword)}`,
           {
             headers: {
               'Accept': 'application/json'
@@ -69,7 +69,7 @@ export default function SearchPage() {
             ...property,
             images: property.images.map(image => ({
               ...image,
-              url: `http://localhost:8000/${image.image_path.replace(/^\//, '')}`
+              url: `https://admin.arearumah.com/${image.image_path.replace(/^\//, '')}`
             }))
           }));
           

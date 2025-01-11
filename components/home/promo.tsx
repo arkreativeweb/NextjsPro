@@ -46,7 +46,7 @@ function Promo() {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/banners');
+        const response = await fetch('https://admin.arearumah.com/api/banners');
         const result = await response.json();
         
         const sortedBanners = result.data

@@ -11,7 +11,7 @@ const Agents = () => {
   useEffect(() => {
     const fetchAgents = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/agents');
+        const response = await fetch('https://admin.arearumah.com/api/agents');
         if (!response.ok) {
           throw new Error('Failed to fetch agents');
         }
@@ -135,7 +135,7 @@ const Agents = () => {
                   <div className="relative w-32 h-32 mx-auto mb-4">
                   <div className="relative w-32 h-32 mx-auto mb-4">
                    <Image
-    src={`http://localhost:8000/storage/${agent.image}`}
+    src={`https://admin.arearumah.com/storage/${agent.image}`}
     alt={agent.name}
     fill
     className="rounded-full object-cover"

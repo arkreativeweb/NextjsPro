@@ -3,7 +3,7 @@ import PropertyDetail from './PropertyDetail'
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   try {
-    const response = await fetch(`http://localhost:8000/api/properties/${params.slug}`);
+    const response = await fetch(`https://admin.arearumah.com/api/properties/${params.slug}`);
     const data = await response.json();
     const property = data.data;
     

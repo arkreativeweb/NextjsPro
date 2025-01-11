@@ -91,7 +91,7 @@ export default function PropertyDetail() {
       try {
         console.log('Fetching property with slug:', slug);
         
-        const response = await fetch(`http://localhost:8000/api/properties/${slug}`);
+        const response = await fetch(`https://admin.arearumah.com/api/properties/${slug}`);
         
         if (!response.ok) {
           const errorText = await response.text();
@@ -115,7 +115,7 @@ export default function PropertyDetail() {
         }
 
         if (data.data.location?.id) {
-          const relatedResponse = await fetch(`http://localhost:8000/api/locations/${data.data.location.slug}`);
+          const relatedResponse = await fetch(`https://admin.arearumah.com/api/locations/${data.data.location.slug}`);
           const relatedData = await relatedResponse.json();
           const filteredProperties = relatedData.data.properties?.filter(
             (p: RelatedProperty) => p.id !== data.data.id

@@ -23,7 +23,7 @@ const Category = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/locations');
+        const response = await fetch('https://admin.arearumah.com/api/locations');
         const result: ApiResponse = await response.json();
         setLocations(result.data);
         setIsLoading(false);
@@ -70,7 +70,7 @@ const Category = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/20 z-10"/>
             <img 
-              src={`http://localhost:8000${location.image}`}
+              src={`https://admin.arearumah.com${location.image}`}
               onError={(e) => {
                 e.currentTarget.src = '/images/default-location.jpg';
               }}

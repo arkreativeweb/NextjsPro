@@ -22,7 +22,7 @@ const LocationPage = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/locations?limit=4`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/locations?limit=4`);
   
         // Log untuk memeriksa status respons
         console.log('Response status:', response.status);

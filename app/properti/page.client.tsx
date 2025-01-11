@@ -55,7 +55,7 @@ const PropertyListClient = () => {
         if (filters.harga_min) params.append('harga_min', filters.harga_min);
         if (filters.harga_max) params.append('harga_max', filters.harga_max);
 
-        const response = await fetch(`http://localhost:8000/api/properties?${params.toString()}`);
+        const response = await fetch(`https://admin.arearumah.com/api/properties?${params.toString()}`);
         const data = await response.json();
         
         if (data.data) {
